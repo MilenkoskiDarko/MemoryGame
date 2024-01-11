@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <script>
+    /*
+    UPDATE:
+      wronglyGuessedNumPositions relativno okej e ko ke se slicni brojkite davat problem,however
+      wronglyGuessedNumDigits ne e proverena,imat greski. I would suggest try another concept :)
+      Se drugo relativno super rabotit, samo ovie dve funkcii.
+     */
+
+    const LIMIT = 10
+    let attempts = 0
+    let number = generateRandomNumber()
+
+    function guess(){
+      let obid = document.getElementById("obid")
+      attempts++
+      if (guessTheNumber() === true)
+      {
+        obid.innerHTML = "Обиди "+attempts
+        return;
+      }
+      else
+      {
+        if (attempts === LIMIT)
+        {
+          obid.innerHTML = "Обиди "+attempts
+          endGame(0)
+          return
+        }
+      }
+      obid.innerHTML = "Обиди "+attempts
+      console.log(number)
+    }
+
+    function guessTheNumber(){
+      let guessedNum = parseInt(document.getElementById("guess").value)
+      if (guessedNum === number)
+      {
+        endGame(1)
+        return true
+      }
+      //CONTINUE
+      let positions = wronglyGuessedNumPositions(guessedNum)
+      let digits =  wronglyGuessedNumDigits(guessedNum)
+      let prikaz = document.getElementById("prikaz")
+      let p = document.createElement("p")
+
+      p.innerHTML = "Има "+digits+",на место "+positions+" "+guessedNum
+      prikaz.appendChild(p)
+      return false
+    }
+    function wronglyGuessedNumDigits(guessedNum) {
+      let gtemp = guessedNum
+      let d1,d2,d3,d4
+      d1 = d2 = d3 = d4 = 0
+      d1 = Math.floor(gtemp / 1000 % 10)
+      d2 = Math.floor(gtemp / 100 % 10)
+      d3 = Math.floor(gtemp % 100 / 10)
+      d4 = Math.floor(gtemp % 10)
+
+      return checkNumDigits(d1)+checkNumDigits(d2)+checkNumDigits(d3)+checkNumDigits(d4)
+    }
+    function checkNumDigits(digit){
+      let sameDigits = 0
+      let d1,d2,d3,d4 = 0
+      d1 = d2 = d3 = d4 = 0
+      d1 = Math.floor(number / 1000 % 10)
+      d2 = Math.floor(number / 100 % 10)
+      d3 = Math.floor(number % 100 / 10)
+      d4 = Math.floor(number % 10)
+      if (digit === d1 || digit === d2 || digit === d3 || digit === d4)
+      {
+        sameDigits++
+      }
+
+      return sameDigits
+    }
+    function wronglyGuessedNumPositions(guessedNum) {
+      let guessedTemp = guessedNum
+      let numberTemp = number
+      let samePosition = 0
+
+      while (numberTemp > 0)
+      {
+        if (guessedTemp % 10 === numberTemp % 10)
+        {
+          samePosition++
+        }
+        //key moment guessedTenp = (update the variable)
+        guessedTemp = Math.floor(guessedTemp / 10)
+        numberTemp = Math.floor(numberTemp / 10)
+      }
+      return samePosition
+    }
+    function endGame(flag) {
+      let prikaz = document.getElementById("prikaz")
+      let p = document.createElement("p")
+      let guessBtn = document.getElementById("guessBtn")
+      guessBtn.disabled = true
+
+      if (flag === 1)
+      {
+        p.innerHTML = "ПОГОДОК!!!"
+      }
+      else if (flag === 0 )
+      {
+        p.innerHTML = "Не успеавте да погодите од 10 обиди.Бројот е "+ number.toString()
+      }
+      prikaz.appendChild(p)
+    }
+    function reset(){
+      updateAttempts()
+      let prikaz = document.getElementById("prikaz")
+      let p = document.getElementsByTagName("p")
+
+      let guessBtn = document.getElementById("guessBtn")
+      guessBtn.disabled = false
+
+      while (prikaz.firstChild) //removeAllChildren key moment
+      {
+        prikaz.removeChild(prikaz.firstChild)
+      }
+      number = generateRandomNumber()
+    }
+    function generateRandomNumber(){
+      return Math.floor(1000 + Math.random() * 9000)
+    }
+    function updateAttempts(){
+      attempts = 0
+      let obid = document.getElementById("obid")
+      obid.innerHTML = "Обиди "+attempts
+    }
+
+  </script>
+</head>
+<body>
+<div>
+  <div style="text-align:right; float:left">
+    <label id="obid">Обиди 0</label>
+    <p>Погодок: <input id="guess" style="width:150px"/></p>
+    <button id="guessBtn" onclick="guess()">Погоди</button>
+    <button onclick="reset()">Од почеток</button>
+  </div>
+</div>
+<br/>
+<div id="prikaz" style="clear: both">
+</div>
+</body>
+</html>

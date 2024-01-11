@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script>
+        /*
+        -Greska iam sho ne se istite sliki na isti pozicii, celo vreme se menvet i
+        ne mojsh 3 isti da pogodis i da sakas
+        -Nekako onload da se generiret random sliki za sekoe pole i posle onclick samo menvenje pozadina
+        so slikata vekje sho ja imat(ili flip)
+         */
+        let ids = []
+        let indexImgArr = [0,0,0,0,0,0,0,0]
+        const IMGsrc = [
+            "url('/memory_IMG/BANDAZ.png')",
+            "url('/memory_IMG/BOJA.png')",
+            "url('/memory_IMG/DETERGENT.png')",
+            "url('/memory_IMG/DONAT.png')",
+            "url('/memory_IMG/KLAVIR.png')",
+            "url('/memory_IMG/LEGO_GLAVA.png')",
+            "url('/memory_IMG/MARS.png')",
+            "url('/memory_IMG/MAUS.png')",
+        ]
+        const IMGvalue = [
+            "BANDAZ",
+            "BOJA",
+            "DETERGENT",
+            "DONAT",
+            "KLAVIR",
+            "LEGO_GLAVA",
+            "MARS",
+            "MAUS"
+        ]
+
+        window.onload = function () {
+            startGame()
+        }
+        function startGame(){
+            setDefaultBackground()
+            // allocateImg()
+            console.log(IMGvalue[0])
+
+        }
+        function allocateImg(){
+            let table = document.getElementById('table');
+            let cells = table.getElementsByTagName("td")
+            let k = 0, j = 0
+            let shuffled = shuffle(IMGvalue)
+            let shuffled2 = shuffle(IMGvalue)
+
+            for (let i = 0 ; i < cells.length ; i++){
+                if (k <8)
+                {
+                    cells[i].textContent = shuffled[k++]
+                }
+                else
+                {
+                    cells[i].textContent = shuffled2[j++]
+                }
+            }
+            for (let i = 0 ; i < cells.length ;i++){
+                console.log(cells[i].textContent)
+            }
+        }
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        function setDefaultBackground() {
+            let table = document.getElementById('table')
+            let cells = table.getElementsByTagName("td")
+
+            for (let i = 0; i < cells.length ; i++)
+            {
+                cells[i].style.backgroundImage = "url('/memory_IMG/ZAVESA.png')"
+            }
+
+        }
+        function userClick(){
+            let cellId = 0
+            let cells = document.querySelectorAll("table td")
+
+            cells.forEach(cell => {
+                cell.addEventListener('click',function (){
+                    cellId = cell.id
+
+
+                })
+            })
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        function setIdDefaultBackground(cellId) {
+            let cell = document.getElementById(cellId)
+            cell.style.backgroundImage = "url('/memory_IMG/ZAVESA.png')"
+        }
+
+
+
+        function setShuffledBackground() {
+            let table = document.getElementById('table');
+            let cellss = table.getElementsByTagName("td")
+            let shuffleArr = shuffle(IMG)
+            let shuffleArr2 = shuffle(IMG)
+            // shuffleArr2 = shuffleArr + shuffleArr2
+            let k = 0
+
+            // Loop through rows
+            // for (let i = 0; i < table.rows.length; i++) {
+            //     let row = table.rows[i];
+            //     // Loop through cells in the row
+            //     for (let j = 0; j < row.cells.length; j++) {
+            //         let cell = row.cells[j];
+            //         // Manipulate cell properties within the loop
+            //         if (k < 8)
+            //         {
+            //             cell.style.backgroundImage = shuffleArr2[k++]
+            //         }
+            //         else
+            //         {
+            //             k = 0
+            //             cell.style.backgroundImage = shuffleArr[k++]
+            //         }
+            //     }
+            // }
+            for (let i = 0 ; i < cellss.length; i++){
+                cellss[i].style.backgroundImage = shuffleArr[i]
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+    <style>
+        #table td{
+            color: transparent;
+        }
+    </style>
+</head>
+<body>
+<h1>Meморија</h1>
+<div style="text-align:left; float:left">
+    <table border="1" id="table" style="width: 750px; height: 750px"  >  <!-- Ionow width/height -->
+        <tr>
+            <td id="11"><img src=""/></td>
+            <td id="12"><img src=""/></td>
+            <td id="13"><img src=""/></td>
+            <td id="14"><img src=""/></td>
+        </tr>
+        <tr>
+            <td id="21"><img src=""/></td>
+            <td id="22"><img src=""/></td>
+            <td id="23"><img src=""/></td>
+            <td id="24"><img src=""/></td>
+        </tr>
+        <tr>
+            <td id="31"><img src=""/></td>
+            <td id="32"><img src=""/></td>
+            <td id="33"><img src=""/></td>
+            <td id="34"><img src=""/></td>
+        </tr>
+        <tr>
+            <td id="41"><img src=""/></td>
+            <td id="42"><img src=""/></td>
+            <td id="43"><img src=""/></td>
+            <td id="44"><img src=""/></td>
+        </tr>
+    </table>
+    <input type="submit" value="RESET" id="resetBtn"/> <!--Probaj so eventListener -->
+</div>
+<br/>
+</body>
